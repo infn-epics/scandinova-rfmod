@@ -1,0 +1,60 @@
+## RF Modulator state-switch delay records:
+## DELAY_RB: remaining time until state switch
+## DELAY_TOTAL: inverse of DELAY_RB -- time spent on current delay 
+
+
+## Remaining time in seconds until RF modulator completes
+## switch to desired state (OFF to StandBy, HV, ...).
+## In other words, a count-down timer. 
+record(ai, "$(PREFIX):DELAY_RB") {
+    field(DESC, "Remaining delay timer")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT)_TIME_REMAINING 0)FLOAT32_LE")
+    field(EGU,  "s")
+    field(HOPR, "0")
+    field(LOPR, "0")
+    field(PREC, "2")
+    field(SCAN, "I/O Intr")
+	field(FLNK, "$(PREFIX):DELAY_HOPR")
+}
+
+## Current RFMod delay total time spent. Calculate how much
+## time has been spent on current RFMod state switch delay.
+## In other words, a count-up timer.
+record(calc, "$(PREFIX):DELAY_TOTAL") {
+    field(DESC, "Current delay time spent")
+    field(EGU,  "s")
+    field(CALC, "(A > 0 ? B - A : 0)")
+    field(INPA, "$(PREFIX):DELAY_RB")
+    field(INPB, "$(PREFIX):DELAY_RB.HOPR")
+    field(HOPR, "0")
+    field(LOPR, "0")
+    field(PREC, "2")
+	field(SCAN, "Passive")
+}
+
+## Set DELAY record's HOPR when RFMod delay countdown is
+## in progress, otherwise reset it to zero.
+record(calcout, "$(PREFIX):DELAY_HOPR") {
+    field(DESC, "Remaining delay HOPR update")
+	field(SCAN, "Passive")
+	field(CALC, "(A > B ? A : (A = 0 ? 0 : B))")
+	field(INPA, "$(PREFIX):DELAY_RB")
+	field(INPB, "$(PREFIX):DELAY_RB.HOPR")
+	field(OUT,  "$(PREFIX):DELAY_RB.HOPR")
+	field(FLNK, "$(PREFIX):DELAY_PROGRESS_HOPR")
+}
+
+## Set DELAY count-up timer's HOPR field.
+record(ao, "$(PREFIX):DELAY_PROGRESS_HOPR") {
+    field(DESC, "Current total delay HOPR update")
+    field(EGU,  "s")
+    field(DOL,  "$(PREFIX):DELAY_RB.HOPR")
+    field(OUT,  "$(PREFIX):DELAY_TOTAL.HOPR")
+    field(OMSL, "closed_loop")
+    field(HOPR, "0")
+    field(LOPR, "0")
+    field(PREC, "2")
+    field(SCAN, "Passive")
+	field(FLNK, "$(PREFIX):DELAY_TOTAL")
+}

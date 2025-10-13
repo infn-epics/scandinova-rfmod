@@ -1,0 +1,21 @@
+# Optimized Single Output INT/UINT Register Template
+# For integer (non-float) registers using grouped ports
+#
+# Macros:
+#   PREFIX     - Device prefix (e.g., "MODHEL01")
+#   RECNAME    - Record name suffix (e.g., ":STATE_SP")
+#   PORT       - Grouped asyn port name
+#   OFFSET     - Register offset within the group (0-based)
+#   DATA_TYPE  - Modbus data type: UINT16, INT16, INT32_LE, etc.
+#   LOPR       - Low operating range
+#   HOPR       - High operating range
+#   DESC       - Description
+
+record(longout, "$(PREFIX)$(RECNAME)") {
+    field(DESC, "$(DESC)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) $(OFFSET))$(DATA_TYPE=UINT16)")
+    field(HOPR, "$(HOPR=65535)")
+    field(LOPR, "$(LOPR=0)")
+    field(PINI, "YES")
+}

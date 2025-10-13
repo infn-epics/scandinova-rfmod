@@ -1,0 +1,25 @@
+# Optimized Single Input Register Template
+# Uses grouped Modbus port with offset addressing
+#
+# Macros:
+#   PREFIX     - Device prefix (e.g., "MODHEL01")
+#   RECNAME    - Record name suffix (e.g., ":PLS:REPR_RB")
+#   PORT       - Grouped asyn port name (e.g., "RFMod_1_SYS_STATUS")
+#   OFFSET     - Register offset within the group (0-based)
+#   DATA_TYPE  - Modbus data type: UINT16, INT16, FLOAT32_LE, etc.
+#   LOPR       - Low operating range
+#   HOPR       - High operating range
+#   EGU        - Engineering units
+#   DESC       - Description
+#   PREC       - Precision (default: 2)
+
+record(ai, "$(PREFIX)$(RECNAME)") {
+    field(DESC, "$(DESC)")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) $(OFFSET))$(DATA_TYPE=FLOAT32_LE)")
+    field(EGU,  "$(EGU)")
+    field(HOPR, "$(HOPR)")
+    field(LOPR, "$(LOPR)")
+    field(PREC, "$(PREC=2)")
+    field(SCAN, "I/O Intr")
+}

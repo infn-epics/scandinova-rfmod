@@ -1,0 +1,26 @@
+
+record(longin, "$(PREFIX):TCP-PROT:ID_RB") {
+    field(DESC, "Protocol Id")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT)_TCP_PROT_ID 0) UINT16")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(PREFIX):TCP-PROT:REV_RB") {
+    field(DESC, "Protocol Revision")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT)_TCP_PROT_REV 0) UINT16")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "$(PREFIX):TCP-PROT:ID:SUPP") {
+    field(DESC, "Supported protocol ID")
+    field(VAL,  "1")
+    field(PINI, "YES")
+}
+
+record(longin, "$(PREFIX):TCP-PROT:REV:SUPP") {
+    field(DESC, "Supported protocol revision")
+    field(VAL,  "1")
+    field(PINI, "YES")
+}

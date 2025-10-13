@@ -1,0 +1,11 @@
+
+record(ai, "$(PREFIX)$(RECNAME)") {
+    field(DESC, "$(DESC)")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) 0)FLOAT32_LE")
+    field(EGU,  "$(EGU)")
+    field(HOPR, "$(HOPR)")
+    field(LOPR, "$(LOPR)")
+    field(PREC, "2")
+    field(SCAN, "I/O Intr")
+}

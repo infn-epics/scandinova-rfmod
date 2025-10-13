@@ -1,0 +1,134 @@
+## Capacitor Charging Power Supply (CCPS) interlocks status records
+##
+## Macros used:
+## P - System/subsystem name prefix
+## CCPS_NUM - CCPS index
+## RFMOD_ASYNPORT - asyn port name
+
+## CCPS unit individual interlocks status
+record(mbbiDirect,"$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB") {
+    field(DESC, "CCPS$(CCPS_NUM) interlocks state")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(RFMOD_ASYNPORT)_CCPS$(CCPS_NUM)_ILCKS 0 0xFFFF)")
+    field(SCAN, "I/O Intr")
+    field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IMAINS")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IMAINS") {
+	field(DESC, "CCPS$(CCPS_NUM) Mains interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B0")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IPWMPC")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IPWMPC") {
+	field(DESC, "CCPS$(CCPS_NUM) PWM Pulse Count interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B1")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IISAQC")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IISAQC") {
+	field(DESC, "CCPS$(CCPS_NUM) ISAQ COM interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B2")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):ISOFTS")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):ISOFTS") {
+	field(DESC, "CCPS$(CCPS_NUM) Soft Start interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B3")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IIGBT")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IIGBT") {
+	field(DESC, "CCPS$(CCPS_NUM) IGBT interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B4")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IPHASE")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IPHASE") {
+	field(DESC, "CCPS$(CCPS_NUM) Phase Loss interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B5")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):ITRANST")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):ITRANST") {
+	field(DESC, "CCPS$(CCPS_NUM) Transformer Temp interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B6")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IRECTT")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IRECTT") {
+	field(DESC, "CCPS$(CCPS_NUM) Rectifier Temp interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B7")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IIGBTT")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IIGBTT") {
+	field(DESC, "CCPS$(CCPS_NUM) IGBT Temp interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B8")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IOVERVOLT")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IOVERVOLT") {
+	field(DESC, "CCPS$(CCPS_NUM) Over Voltage interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.B9")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IOVERCURR")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IOVERCURR") {
+	field(DESC, "CCPS$(CCPS_NUM) Over Current interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.BA")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):IOFDT")
+}
+
+record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IOFDT") {
+	field(DESC, "CCPS$(CCPS_NUM) OptoFiberDarkTimeout interlock")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_RB.BB")
+	field(SCAN, "Passive")
+	field(ZNAM, "Interlock")
+	field(ONAM, "Ok")
+	field(ZSV,  "MAJOR")
+}

@@ -1,0 +1,185 @@
+
+# mbbiDirect record template for register inputs
+record(mbbi,"$(PREFIX):STATE_RB") {
+    field(DESC, "RF modulator state")
+    field(DTYP,"asynInt32")
+    field(INP,"@asynMask($(PORT)_STATE_RB 0 0xFFFF)")
+    field(SCAN,"I/O Intr")
+        
+    field(ZRVL, "-1")
+    field(ONVL, "0")
+    field(TWVL, "1")
+    field(THVL, "2")
+    field(FRVL, "3")
+    field(FVVL, "4")
+    field(SXVL, "5")
+    field(SVVL, "6")
+    field(EIVL, "7")
+    field(NIVL, "8")
+    field(TEVL, "9")
+    field(ELVL, "10")
+    field(TVVL, "11")
+    field(TTVL, "12")
+    field(FTVL, "13")
+        
+    field(ZRST, "Error")
+    field(ONST, "Initialize")
+    field(TWST, "Off")
+    field(THST, "StandByInterlock")
+    field(FRST, "StandByOffRequested")
+    field(FVST, "StandByOnRequested")
+    field(SXST, "StandBy")
+    field(SVST, "HvInterlock")
+    field(EIST, "HvOffRequested")
+    field(NIST, "HvOnRequested")
+    field(TEST, "Hv")
+    field(ELST, "TrigInterlock")
+    field(TVST, "TrigOffRequested")
+    field(TTST, "TrigOnRequested")
+    field(FTST, "Trig")
+    
+    field(SCAN,"I/O Intr")
+}
+
+record(mbbo,"$(PREFIX):STATE_SP") {
+    field(DESC, "RF modulator state")
+    field(DTYP,"asynInt32")
+    field(OUT,"@asynMask($(PORT)_STATE_SP 0 0xFFFF)")
+        
+    field(ZRVL, "13")
+    field(ONVL, "5")
+    field(TWVL, "1")
+    field(THVL, "9")
+        
+    field(ZRST, "Trig")
+    field(ONST, "StandBy")
+    field(TWST, "Off")
+    field(THST, "Hv")
+}
+
+
+record(mbbi,"$(PREFIX):STATE_SET_RB") {
+    field(DESC, "RF modulator state readback")
+    
+    field(DTYP,"asynInt32")
+    field(INP,"@asynMask($(PORT)_STATE_SR 0 0xFFFF)")
+    field(SCAN,"I/O Intr")
+        
+    field(ZRVL, "13")
+    field(ONVL, "5")
+    field(TWVL, "1")
+    field(THVL, "9")
+        
+    field(ZRST, "Trig")
+    field(ONST, "StandBy")
+    field(TWST, "Off")
+    field(THST, "Hv")
+}
+
+
+# mbbiDirect record template for register inputs
+record(mbbi,"$(PREFIX):ACCLVL_RB") {
+    field(DESC, "Access level")
+    field(DTYP,"asynInt32")
+    field(INP,"@asynMask($(PORT)_ACC_LVL_RB 0 0xFFFF)")
+        
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+        
+    field(ZRST, "Remote")
+    field(ONST, "Operator")
+    field(TWST, "Admin")
+    field(THST, "ScandiNova")
+    
+    field(SCAN,"I/O Intr") 
+}
+
+# bo record template for register outputs
+record(bo, "$(PREFIX):RESET_SP") {
+    field(DESC, "Reset interlocks")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT)_CMD_SP 0 0x1)")
+    field(ZNAM, "OK")
+    field(ONAM, "RESET")
+    field(FLNK, "$(PREFIX):RESET_DELAY")
+}
+
+record(seq, "$(PREFIX):RESET_DELAY") {
+	field(DESC, "Set reset to zero after delay")
+	field(SCAN, "Passive")
+	field(SELM, "All")
+	field(DOL1, "0")
+	field(LNK1, "$(PREFIX):RESET_ZERO.VAL PP")
+	field(DLY1, "2.0")
+}
+
+record(longout, "$(PREFIX):RESET_ZERO") {
+    field(DESC, "Set reset modbus register to zero")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT)_CMD_SP 0 0x1)")
+    field(VAL,  "0")
+}
+
+## Modulator status flags
+record(mbbiDirect, "$(PREFIX):STATUS_RB") {
+    field(DESC, "Modulator status")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT)_STATUS_RB 0 0x1F)")
+    field(SCAN, "I/O Intr")
+    field(FLNK, "$(PREFIX):STATUS:STBY_ILCK")
+}
+
+record(bi, "$(PREFIX):STATUS:STBY_ILCK") {
+    field(DESC, "Standby interlock active")
+    field(INP,  "$(PREFIX):STATUS_RB.B0")
+    field(SCAN, "Passive")
+    field(ZNAM, "Inactive")
+    field(ONAM, "Active")
+    field(FLNK, "$(PREFIX):STATUS:HV_ILCK")
+}
+
+record(bi, "$(PREFIX):STATUS:HV_ILCK") {
+    field(DESC, "High Voltage interlock active")
+    field(INP,  "$(PREFIX):STATUS_RB.B1")
+    field(SCAN, "Passive")
+    field(ZNAM, "Inactive")
+    field(ONAM, "Active")
+    field(FLNK, "$(PREFIX):STATUS:TRIG_ILCK")
+}
+
+record(bi, "$(PREFIX):STATUS:TRIG_ILCK") {
+    field(DESC, "Trigger interlock active")
+    field(INP,  "$(PREFIX):STATUS_RB.B2")
+    field(SCAN, "Passive")
+    field(ZNAM, "Inactive")
+    field(ONAM, "Active")
+    field(FLNK, "$(PREFIX):STATUS:WARN_COND")
+}
+
+record(bi, "$(PREFIX):STATUS:WARN_COND") {
+    field(DESC, "Warning condition")
+    field(INP,  "$(PREFIX):STATUS_RB.B3")
+    field(SCAN, "Passive")
+    field(ZNAM, "Inactive")
+    field(ONAM, "Active")
+    field(FLNK, "$(PREFIX):STATUS:OLIM_COND")
+}
+
+record(bi, "$(PREFIX):STATUS:OLIM_COND") {
+    field(DESC, "Outside limits condition")
+    field(INP,  "$(PREFIX):STATUS_RB.B4")
+    field(SCAN, "Passive")
+    field(ZNAM, "Inactive")
+    field(ONAM, "Active")
+    field(FLNK, "$(PREFIX):STATUS:ERR_COND")
+}
+
+record(bi, "$(PREFIX):STATUS:ERR_COND") {
+    field(DESC, "Error condition")
+    field(INP,  "$(PREFIX):STATUS_RB.B5")
+    field(SCAN, "Passive")
+    field(ZNAM, "Inactive")
+    field(ONAM, "Active")
+}

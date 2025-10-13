@@ -1,0 +1,39 @@
+
+record(longin, "$(PREFIX):TCP-WD:WD_RB") {
+    field(DESC, "Watchdog value")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT)_TCP_WD_PREV 0) UINT16")
+    field(SCAN, "I/O Intr")
+}
+
+record(calcout, "$(PREFIX):TCP-WD:CHECK") {
+  field(DESC, "Checks if sent/recvd WD values match")
+  field(SCAN, ".5 second")
+  field(FLNK, "$(PREFIX):TCP-WD:INC")
+  field(CALC, "(A != B ? 0 : 1)")
+  field(INPA, "$(PREFIX):TCP-WD:INC.VAL")
+  field(INPB, "$(PREFIX):TCP-WD:WD_RB.VAL")
+  field(OUT,  "$(PREFIX):TCP-WD:STATUS.VAL PP")
+}
+
+record(bi, "$(PREFIX):TCP-WD:STATUS") {
+  field(DESC, "TCP connection status")
+  field(ZNAM, "Connection Error")
+  field(ONAM, "Connected")
+  field(ZSV,  "MAJOR")
+  field(VAL,  "0")
+}
+
+record(calcout, "$(PREFIX):TCP-WD:INC") {
+  field(DESC, "Watchdog value incrementor")
+# Target Modbus register is Int16, make sure not to overflow
+  field(CALC, "(A < 32000 ? A+1 : 0)")
+  field(INPA, "$(PREFIX):TCP-WD:INC.VAL")
+  field(OUT,  "$(PREFIX):TCP-WD:WD_SP.VAL PP")
+}
+
+record(longout,"$(PREFIX):TCP-WD:WD_SP") {
+    field(DESC, "Watchdog modbus register setpoint")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT)_WD_SP 0) UINT16")
+}
