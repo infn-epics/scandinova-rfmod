@@ -10,16 +10,23 @@ dbLoadDatabase "../../dbd/scandinova-rfmod.dbd"
 scandinova_rfmod_registerRecordDeviceDriver(pdbbase) 
 
 epicsEnvSet("RFMOD_ID",         "1")
-epicsEnvSet("RFMOD_SLAVE_ADDR", "2")
+epicsEnvSet("RFMOD_SLAVE_ADDR", "0")
 epicsEnvSet("RFMOD_TCP_IP", "pwelimod001.int.eli-np.ro")
 epicsEnvSet("RFMOD_TCP_PORT",   "502")
 < ../../proto/scandinova-rfmod.cmd
 
-# epicsEnvSet("RFMOD_ID",         "3")
-# epicsEnvSet("RFMOD_SLAVE_ADDR", "1")
-# epicsEnvSet("RFMOD_TCP_IP", "pwelimod002.star.unical.it")
-# epicsEnvSet("RFMOD_TCP_PORT",   "502")
-# < ../../proto/scandinova-rfmod.cmd
+epicsEnvSet("RFMOD_ID",         "2")
+epicsEnvSet("RFMOD_SLAVE_ADDR", "0")
+epicsEnvSet("RFMOD_TCP_IP", "pwelimod002.int.eli-np.ro")
+epicsEnvSet("RFMOD_TCP_PORT",   "502")
+< ../../proto/scandinova-rfmod.cmd
+
+epicsEnvSet("RFMOD_ID",         "3")
+epicsEnvSet("RFMOD_SLAVE_ADDR", "0")
+epicsEnvSet("RFMOD_TCP_IP", "pwelimod003.int.eli-np.ro")
+epicsEnvSet("RFMOD_TCP_PORT",   "502")
+< ../../proto/scandinova-rfmod.cmd
+
 
 ## Enable ASYN_TRACEIO_HEX on octet server
 #asynSetTraceIOMask("$(RFMOD_ASYNPORT)", 0, 4)
@@ -35,6 +42,9 @@ epicsEnvSet("RFMOD_TCP_PORT",   "502")
 
 ## Load record instances
 dbLoadRecords("../../db/scandinova-rfmod.db","RFMOD_ASYNPORT=RFMod_1, PREFIX=MODHEL01")
+dbLoadRecords("../../db/scandinova-rfmod.db","RFMOD_ASYNPORT=RFMod_2, PREFIX=MODHEL02")
+dbLoadRecords("../../db/scandinova-rfmod.db","RFMOD_ASYNPORT=RFMod_3, PREFIX=MODHEL03")
+
 # dbLoadRecords("../../db/scandinova-rfmod.db","RFMOD_ASYNPORT=RFMod_3, PREFIX=MODHEL02")
 
 iocInit()

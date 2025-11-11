@@ -7,8 +7,8 @@
 
 epicsEnvSet("RFMOD_ASYNPORT", "RFMod_$(RFMOD_ID)")
 epicsEnvSet("RFMOD_MSGS", "SCN_RFMod_$(RFMOD_ID)")
-epicsEnvSet("RFMOD_POLLING", "900")
-epicsEnvSet("RFMOD_WD_POLLING", "250")
+epicsEnvSet("RFMOD_POLLING", "2000")
+epicsEnvSet("RFMOD_WD_POLLING", "1000")
 
 ## Use the following commands for TCP/IP
 ## drvAsynIPPortConfigure(const char *portName,

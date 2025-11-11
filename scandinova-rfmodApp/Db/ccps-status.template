@@ -131,4 +131,39 @@ record(bi, "$(PREFIX):CCPS$(CCPS_NUM):IOFDT") {
 	field(ZNAM, "Interlock")
 	field(ONAM, "Ok")
 	field(ZSV,  "MAJOR")
+	field(FLNK, "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_SUM_RB")
+}
+
+## Calculate sum of all interlocks (any interlock = 1)
+record(calc, "$(PREFIX):CCPS$(CCPS_NUM):ILCKS_SUM_RB") {
+	field(DESC, "CCPS$(CCPS_NUM) Any interlock active")
+	field(CALC, "A|B|C|D|E|F|G|H|I|J|K|L")
+	field(INPA, "$(PREFIX):CCPS$(CCPS_NUM):IMAINS")
+	field(INPB, "$(PREFIX):CCPS$(CCPS_NUM):IPWMPC")
+	field(INPC, "$(PREFIX):CCPS$(CCPS_NUM):IISAQC")
+	field(INPD, "$(PREFIX):CCPS$(CCPS_NUM):ISOFTS")
+	field(INPE, "$(PREFIX):CCPS$(CCPS_NUM):IIGBT")
+	field(INPF, "$(PREFIX):CCPS$(CCPS_NUM):IPHASE")
+	field(INPG, "$(PREFIX):CCPS$(CCPS_NUM):ITRANST")
+	field(INPH, "$(PREFIX):CCPS$(CCPS_NUM):IRECTT")
+	field(INPI, "$(PREFIX):CCPS$(CCPS_NUM):IIGBTT")
+	field(INPJ, "$(PREFIX):CCPS$(CCPS_NUM):IOVERVOLT")
+	field(INPK, "$(PREFIX):CCPS$(CCPS_NUM):IOVERCURR")
+	field(INPL, "$(PREFIX):CCPS$(CCPS_NUM):IOFDT")
+	field(SCAN, "Passive")
+}
+
+## Voltage limits - based on record limits from voltage readback
+record(ai, "$(PREFIX):CCPS$(CCPS_NUM):VHLIM_RB") {
+	field(DESC, "CCPS$(CCPS_NUM) Voltage High Limit")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):VOLT_RB.HOPR CP")
+	field(EGU,  "V")
+	field(PREC, "2")
+}
+
+record(ai, "$(PREFIX):CCPS$(CCPS_NUM):VLLIM_RB") {
+	field(DESC, "CCPS$(CCPS_NUM) Voltage Low Limit")
+	field(INP,  "$(PREFIX):CCPS$(CCPS_NUM):VOLT_RB.LOPR CP")
+	field(EGU,  "V")
+	field(PREC, "2")
 }
