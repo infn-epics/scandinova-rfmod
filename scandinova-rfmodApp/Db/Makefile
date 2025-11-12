@@ -16,6 +16,8 @@ include $(TOP)/configure/CONFIG
 # <anyname>_TEMPLATE = <templatename>
 
 DB += scandinova-rfmod.db
+DB += scandinova-rfmod-optimized.db
+DB += scandinova-rfmod-split-debug.db
 
 
 include $(TOP)/configure/RULES

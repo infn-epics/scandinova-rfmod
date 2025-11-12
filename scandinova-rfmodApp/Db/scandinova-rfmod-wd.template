@@ -8,7 +8,7 @@ record(longin, "$(PREFIX):TCP-WD:WD_RB") {
 
 record(calcout, "$(PREFIX):TCP-WD:CHECK") {
   field(DESC, "Checks if sent/recvd WD values match")
-  field(SCAN, ".5 second")
+  field(SCAN, "5 second")
   field(FLNK, "$(PREFIX):TCP-WD:INC")
   field(CALC, "(A != B ? 0 : 1)")
   field(INPA, "$(PREFIX):TCP-WD:INC.VAL")
